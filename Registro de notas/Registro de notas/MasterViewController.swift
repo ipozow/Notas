@@ -12,7 +12,7 @@ class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var objects = [Any]()
-
+    var nombreRamo: UITextField?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,7 @@ class MasterViewController: UITableViewController {
 
     @objc
     func insertNewObject(_ sender: Any) {
-        objects.insert(NSDate(), at: 0)
+        objects.insert(NSTextContainer(), at: 0)
         let indexPath = IndexPath(row: 0, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
@@ -49,9 +49,20 @@ class MasterViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
+                func displayAlertAction(_ sender: Any) {
+                    let alertController = UIAlertController(title: "Ingresa el nombre del ramo", message: nil, preferredStyle: .alert)
+                    alertController.addTextField(configurationHandler: nombreRamo)
+                    
+                    let aceptar = UIAlertAction(title: "Aceptar", style: .default)
+                    let cancelar = UIAlertAction(title: "Cancelar", style: .cancel)
+                }
+                func nombreRamo(textField: UITextField!) {
+                   // nombreRamo = textField
+                    //nombreRamo?.placeholder = "Matemática"
+                }
+                _ = objects[indexPath.row] as! NSTextContainer
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
+
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
@@ -71,8 +82,8 @@ class MasterViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
-        let object = objects[indexPath.row] as! NSDate
-        cell.textLabel!.text = object.description
+        let object = objects[indexPath.row] // as! NSTextContainer
+        cell.textLabel!.text = (object as AnyObject).description
         return cell
     }
 
