@@ -42,7 +42,8 @@ class MasterViewController: UITableViewController {
     // Este era el que agregaba la linea :)
     @objc
     func insertNewObject(_ sender: Any) {
-        objects.insert(NSTextContainer(), at: 0)
+        objects.insert(UILabel(), at: 0)
+        
         let indexPath = IndexPath(row: 0, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
@@ -74,7 +75,10 @@ class MasterViewController: UITableViewController {
             self.nombreRamo = textField
         })
         
-        let aceptar = UIAlertAction(title: "Aceptar", style: .default)
+        let aceptar = UIAlertAction(title: "Aceptar", style: .default, handler: {
+            alert in
+            insertNewObject(Any) = alertController.textFields?.first?.text!
+        })
         let cancelar = UIAlertAction(title: "Cancelar", style: .cancel)
         
         alertController.addAction(aceptar)
