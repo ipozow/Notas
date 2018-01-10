@@ -18,8 +18,10 @@ class MasterViewController: UITableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.leftBarButtonItem = editButtonItem
-
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
+        
+        // Acá crea y setéa el botón de +
+        // El selector es lo que llama la acción, lo cambié por show alert.
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAlert))
         navigationItem.rightBarButtonItem = addButton
         if let split = splitViewController {
             let controllers = split.viewControllers
@@ -37,6 +39,7 @@ class MasterViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    // Este era el que agregaba la linea :)
     @objc
     func insertNewObject(_ sender: Any) {
         objects.insert(NSTextContainer(), at: 0)
@@ -49,13 +52,9 @@ class MasterViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                func displayAlertAction(_ sender: Any) {
-                    let alertController = UIAlertController(title: "Ingresa el nombre del ramo", message: nil, preferredStyle: .alert)
-                    alertController.addTextField(configurationHandler: nombreRamo)
-                    
-                    let aceptar = UIAlertAction(title: "Aceptar", style: .default)
-                    let cancelar = UIAlertAction(title: "Cancelar", style: .cancel)
-                }
+                
+                
+                
                 func nombreRamo(textField: UITextField!) {
                    // nombreRamo = textField
                     //nombreRamo?.placeholder = "Matemática"
@@ -68,7 +67,25 @@ class MasterViewController: UITableViewController {
             }
         }
     }
-
+    
+    @objc func showAlert() {
+        let alertController = UIAlertController(title: "Ingresa el nombre del ramo", message: nil, preferredStyle: .alert)
+        alertController.addTextField(configurationHandler: { textField in
+            self.nombreRamo = textField
+        })
+        
+        let aceptar = UIAlertAction(title: "Aceptar", style: .default)
+        let cancelar = UIAlertAction(title: "Cancelar", style: .cancel)
+        
+        alertController.addAction(aceptar)
+        alertController.addAction(cancelar)
+        
+        navigationController?.present(alertController, animated: true, completion: {
+            // acá lo que pasa cuando se termina de mostrar.
+        })
+        
+    }
+        
     // MARK: - Table View
 
     override func numberOfSections(in tableView: UITableView) -> Int {
