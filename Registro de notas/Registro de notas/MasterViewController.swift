@@ -41,8 +41,10 @@ class MasterViewController: UITableViewController {
 
     // Este era el que agregaba la linea :)
     @objc
-    func insertNewObject(_ sender: Any) {
-        objects.insert(UILabel(), at: 0)
+    func insertNewObject(_ texto : String) {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
+        label.text = texto
+        objects.insert(label, at: 0)
         
         let indexPath = IndexPath(row: 0, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
@@ -53,8 +55,6 @@ class MasterViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                
-                
                 
                 func nombreRamo(textField: UITextField!) {
                    // nombreRamo = textField
@@ -77,7 +77,7 @@ class MasterViewController: UITableViewController {
         
         let aceptar = UIAlertAction(title: "Aceptar", style: .default, handler: {
             alert in
-            insertNewObject(Any) = alertController.textFields?.first?.text!
+            self.insertNewObject( (alertController.textFields?.first?.text)! )
         })
         let cancelar = UIAlertAction(title: "Cancelar", style: .cancel)
         
@@ -104,7 +104,7 @@ class MasterViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         let object = objects[indexPath.row] // as! NSTextContainer
-        cell.textLabel!.text = (object as AnyObject).description
+        cell.textLabel!.text = (object as! UILabel).text
         return cell
     }
 
